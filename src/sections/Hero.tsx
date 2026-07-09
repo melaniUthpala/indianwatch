@@ -36,6 +36,15 @@ export default function Hero() {
 
   const [mode, setMode] = useState<Mode>("IDLE");
   const [currentFrame, setCurrentFrame] = useState(frames[0]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     let cleanup: (() => void) | null = null;
@@ -229,15 +238,26 @@ export default function Hero() {
         </AnimatePresence>
 
         {showPanels && (
-          <div style={{ position: "absolute", inset: 0, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", alignItems: "center", padding: "0 4vw", pointerEvents: "none" }}>
-            <div style={{ display: "flex", justifyContent: "flex-start" }}>
-              <FrameText frame={currentFrame} visible={showPanels} />
+          isMobile ? (
+            <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 10, padding: "90px 16px 110px", pointerEvents: "none", overflowY: "auto" }}>
+              <div style={{ pointerEvents: "auto", width: "100%", maxWidth: 340 }}>
+                <FrameText frame={currentFrame} visible={showPanels} />
+              </div>
+              <div style={{ pointerEvents: "auto", width: "100%", maxWidth: 340 }}>
+                <BuyCard frame={currentFrame} visible={showPanels} />
+              </div>
             </div>
-            <div />
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <BuyCard frame={currentFrame} visible={showPanels} />
+          ) : (
+            <div style={{ position: "absolute", inset: 0, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", alignItems: "center", padding: "0 4vw", pointerEvents: "none" }}>
+              <div style={{ display: "flex", justifyContent: "flex-start" }}>
+                <FrameText frame={currentFrame} visible={showPanels} />
+              </div>
+              <div />
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <BuyCard frame={currentFrame} visible={showPanels} />
+              </div>
             </div>
-          </div>
+          )
         )}
 
         {!isIdle && (

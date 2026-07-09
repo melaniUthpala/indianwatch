@@ -166,3 +166,17 @@ html.lenis, html.lenis body { height: auto; }
 }
 body.cursor-hovering .cursor-dot { width: 4px; height: 4px; }
 body.cursor-hovering .cursor-ring { width: 52px; height: 52px; border-color: rgba(242, 210, 139, 0.9); }
+@media (max-width: 768px) {
+  #catalog, #story {
+    padding: 4rem 1.25rem !important;
+  }
+  #catalog h2, #story h3 {
+    font-size: clamp(1.6rem, 7vw, 2.2rem) !important;
+  }
+  footer {
+    padding: 3rem 1.25rem 2rem !important;
+  }
+  .btn-outline {
+    font-size: 0.62rem !important;
+  }
+}
